@@ -67,7 +67,7 @@
     /* Array creation */
     $Array1 = array( array() );
 
-    /* Set all elements to zero */
+    /* Set all elements to zero at the same time dimensioning array */
     $Array1 = array_fill( 0, 10, array_fill( 0, 10, 0 ) );
 
     /* Print all elements */
