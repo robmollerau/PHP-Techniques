@@ -1,8 +1,8 @@
 <?php
     /* 
-    // Script      : basicArrays.php - Basic Arrays in PHP 
-    // Mode        : Console (run using php -f basicArrays.php)
-    // Create Date : Thu 7 Oct 2021
+    ** Script      : basicArrays.php - Basic Arrays in PHP 
+    ** Mode        : Console (run using php -f basicArrays.php)
+    ** Create Date : Thu 7 Oct 2021
     /*
 
     /* Force strict types */
@@ -42,6 +42,7 @@
 
     /* Constant array - Two dimension with key */
     const COUNTRY_CODE_ARRAY = array(
+    //   Cde.............Country......Capital.........CallCode
         'ARG' => array( 'Argentina', 'Buenos Aires', '011' ),
         'BRA' => array( 'Brazil',    'Brasilia',     '55'  ),
         'COL' => array( 'Colombia',  'Bogota',       '57'  )
@@ -96,6 +97,8 @@
     /* Print all elements */
     print_r( $Array1 );
 
+    // Array Lookup ////////////////////////////////////////////////////////////
+
     /* Lookup key in two dimension constant array */
     $Key = 'COL';
     if ( array_key_exists( $Key, COUNTRY_CODE_ARRAY ) ) {
@@ -121,6 +124,8 @@
     /* Get last key */
     echo( 'Last Key: ' . array_key_last( COUNTRY_CODE_ARRAY ) . PHP_EOL );
 
+    // Array Adding/Removing ///////////////////////////////////////////////////
+
     /* Adding to array - single dimension */
     $ArrayBirds = [];
 
@@ -128,25 +133,72 @@
     print_r( $ArrayBirds );
 
     /* Remove last element */
-    print_r( array_pop( $ArrayBirds ) );
+    array_pop( $ArrayBirds );
+    print_r( $ArrayBirds );
 
-    /* When creating subarrays we clone the original array sa array_chunk will modify original array */
-    $TempArray = array_merge( $ArrayBirds );
+    /* Cloning an array */
+    $TempArray = $ArrayBirds;
 
     /* Create arrays from an array - will create two sub arrays */
     $ArrayBirds2 = array_chunk( $TempArray, 2 );
     echo( 'Birds 2' . PHP_EOL );
-    //print_r( $ArrayBirds2 );
+    print_r( $ArrayBirds2 );
+
+    /* Adding to array - two dimension */
+    $ArrayPeriodic = [];
+
+    array_push( $ArrayPeriodic, array( 'H',  'Hydrogen' ) );
+    array_push( $ArrayPeriodic, array( 'Li', 'Lithium'  ) );
+    array_push( $ArrayPeriodic, array( 'Na', 'Sodium'   ) );
+
+    /* When key is not present the element offset is used as key */
+    foreach( $ArrayPeriodic as $Key => $Value ) {
+        echo( $Key . ' ' . $Value[ 0 ] . ' - ' . $Value[ 1 ] . PHP_EOL );
+    }
+
+    /* Remove last row */
+    array_pop( $ArrayPeriodic );
+
+    echo( PHP_EOL );
+
+    /* When key is not present the element offset is used as key */
+    foreach( $ArrayPeriodic as $Key => $Value ) {
+        echo( $Key . ' ' . $Value[ 0 ] . ' - ' . $Value[ 1 ] . PHP_EOL );
+    }
+
+    // Basic sorting ///////////////////////////////////////////////////////////
 
     /* Sorting birds array */
-    print_r( sort( $ArrayBirds ) );
+    //print_r( sort( $ArrayBirds ) );
 
+    // Custom Sorting //////////////////////////////////////////////////////////
+
+    echo( PHP_EOL );
     
+    /* For custom sorting we create a user function and then pass it as a 
+       parameter in the usort function */
 
+    /* Comparer will sort by element length - returns -1, 0 and 1 */
+    function usort_comparer( $AValue1, $AValue2 ) {
+        if ( strlen( $AValue1 ) == strlen( $AValue2 ) ) {
+            return 0;
+        }
+        return ( strlen( $AValue1 ) < strlen( $AValue2 ) ) ? -1 : 1;
+    }
 
+    $ArrayNames = array( 'Stephen', 'Brett', 'Charles', 'Ed', 'Cristopher', 'Mark' );
 
+    /* Custom sort */
+    usort( $ArrayNames, "usort_comparer" );
 
-  
+    echo( PHP_EOL );
+   
+    /* Display result - key becomes row number if offset is not present */
+    echo( "Sorted by name length\n" );
+    foreach( $ArrayNames as $Key => $Value ) {
+        echo( "$Key : $Value\n" );
+    }
+
 
 
 
