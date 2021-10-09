@@ -88,7 +88,6 @@
         $Str = sprintf( $PrintFormat, $Key, $Item->FirstName, $Item->LastName,
           $Item->ID, $Item->Sector->label() );
         echo( $Str . PHP_EOL );
-
     }
 
     /* First name comparer */
