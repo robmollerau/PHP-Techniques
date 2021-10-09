@@ -16,19 +16,37 @@
         case Lyon;
     }
 
-    /* Backed Enum - has a value associated with it */
-    enum TCitiesBackedEnum : int {
-        case London     = 1;
-        case Bristol    = 2;
-        case Birmingham = 3;
-    }
-
-    /* Associative array to get string form of enum */
+    /* Associated array to retrieve label as string */
     const CITIES_ARRAY = array(
         1 => 'London',
         2 => 'Bristol',
         3 => 'Birmingham'
     );    
+
+    /* Backed Enum - has a value associated with it */
+    enum TCitiesBackedEnum : int {
+
+        case London     = 1;
+        case Bristol    = 2;
+        case Birmingham = 3;
+
+        /* Returns associated array string value - this method is useful if the
+           returned value is an array itself - hence better to keep separate */
+        public function label() : string {
+            $Num = $this->value;
+            return( CITIES_ARRAY[ $Num ] );
+        }
+
+        /* We can also return match */
+        public function label2() : string {
+            return match ( $this ) {
+                self::London     => 'London',
+                self::Bristol    => 'Bristol',
+                self::Birmingham => 'Birmingham',
+            };
+        }
+
+    }    
 
     const PE_COMMON_NAME   = 0;
     const PE_ATOMIC_NUMBER = 1;
@@ -99,9 +117,21 @@
        constant array or methods in the enum } */
     echo( CITIES_ARRAY[ $BritishCity->value ] . PHP_EOL );
 
+    /* For the reverse operation where a string is passed we search the associative
+       array for the key which becomes the value to assign enum */
+    $SearchString = 'Bristol';
+    /* Perform array search - true indicates strict matching */
+    $Key          = array_search( $SearchString, CITIES_ARRAY, true );
+    $BritishCity2 = TCitiesBackedEnum::from( $Key );
+    if ( $BritishCity2 == TCitiesBackedEnum::Bristol ) {
+        echo( 'Bristol was found' . PHP_EOL );
+    } else {
+        echo( 'Bristol was not found' . PHP_EOL );
+    }
 
-
-
-       
+    /* We added a method in the enum called label to get label in string format */
+    $City3 = TCitiesBackedEnum::Birmingham;
+    echo( 'I like living in ' . $City3->label() . PHP_EOL );
+    echo( 'I like living in ' . $City3->label2() . PHP_EOL );
 
     
